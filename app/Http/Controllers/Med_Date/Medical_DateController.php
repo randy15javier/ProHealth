@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Med_Date;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\Medical_Date;
 
-class Medical_DateController extends Controller
+class Medical_DateController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,9 @@ class Medical_DateController extends Controller
      */
     public function index()
     {
-        //
+        $citasmedicas = Medical_Date::all();
+
+        return $this->showAll($citasmedicas);
     }
 
     /**
@@ -44,9 +47,9 @@ class Medical_DateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Medical_Date $medicaldate)
     {
-        //
+        return $this->showOne($medicaldate, 200);
     }
 
     /**
@@ -78,8 +81,10 @@ class Medical_DateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Medical_Date $citasmedicas)
     {
-        //
+        $citasmedicas->delete();
+
+         return $this->showOne($citasmedicas, 200);
     }
 }

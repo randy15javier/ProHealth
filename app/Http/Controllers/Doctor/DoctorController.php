@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Doctor;
+namespace App\Http\Controllers\doctor;
 
+use App\Doctor;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class DoctorController extends Controller
+class DoctorController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,8 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        //
+        $doctores = Doctor::all();
+        return $this->showAll($doctores);
     }
 
     /**
@@ -35,7 +37,24 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $reglas = [
+
+            'doctor_code' => 'required',
+            'name' => 'required',
+            'lastname' => 'required',
+            'telephone' => 'required|unique:doctors',
+            'email' => 'required|email|unique:doctors'   
+        ];
+
+
+        $this->validate($request, $reglas);
+
+
+        $campos = $request->all();
+
+        $doctor = Doctor::create($campos);
+
+        return $this->showOne($doctor, 201);
     }
 
     /**
@@ -44,9 +63,9 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Doctor $doctor)
     {
-        //
+        return $this->showOne($doctor, 200);
     }
 
     /**
@@ -67,9 +86,34 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Doctor $doctor)
     {
-        //
+
+        $reglas = [
+
+            'telephone' => 'unique:doctors',
+            'email' => '|email|unique:doctors,email,' . $doctor->id,   
+        ];
+
+        $this->validate($request, $reglas);
+
+        if ($request->has('telephone')) {
+            $doctor->telephone = $request->telephone;
+        }
+
+        if ($request->has('email')) {
+            $doctor->email = $request->email;
+        }
+
+
+        if (!$doctor->isDirty()) {
+            return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar', 422);
+        }
+
+        $doctor->save();
+
+        return $this->showOne($doctor, 201);
+
     }
 
     /**
@@ -78,8 +122,12 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( Doctor $doctor)
     {
-        //
+
+        $doctor->delete();
+
+         return $this->showOne($doctor, 200);
+
     }
 }
