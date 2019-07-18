@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Med_Dates;
+namespace App\Http\Controllers\Med_Date;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

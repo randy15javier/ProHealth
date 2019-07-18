@@ -1,13 +1,17 @@
 <?php
 
 namespace App;
-
+use App\Medical_Date;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +19,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'lastname',
+        'email', 
+        'password',
     ];
 
     /**
@@ -24,6 +31,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 
+        'remember_token',
     ];
+
+    public function medical_dates()
+	{
+		return $this->hasMany(Medical_Date::class);
+	}
 }

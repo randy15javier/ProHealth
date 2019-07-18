@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::resource('doctors', 'Doctor\DoctorController', ['except' => ['create', 'edit']]);
+
+Route::resource('medicaldates', 'Med_Date\Medical_DateController', ['except' => ['create', 'edit']]);
+
+Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
+
+Route::resource('receptionist', 'Receptionist\ReceptionistController', ['except' => ['create', 'edit']]);
+
+
+

@@ -1,11 +1,9 @@
 <?php
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Medical_Date;
 
-class CreateMedicalDatesTable extends Migration
+class CreateDoctorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +12,13 @@ class CreateMedicalDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('medical_dates', function (Blueprint $table) {
+        Schema::create('doctors', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
-            $table->time('time');
-            $table->string('status')->default(Medical_Date::CITA_NO_ATENDIDA);
-            $table->string('observation');
-            $table->double('price')->unsigned();
-            $table->string('patient');
+            $table->integer('doctor_code');
+            $table->string('name');
+            $table->string('lastname');
+            $table->string('telephone');
+            $table->string('email')->unique();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,7 +31,6 @@ class CreateMedicalDatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medical_dates');
+        Schema::dropIfExists('doctors');
     }
 }
-

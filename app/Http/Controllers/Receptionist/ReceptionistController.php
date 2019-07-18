@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Receptionist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class RecepcionistController extends Controller
+class ReceptionistController extends Controller
 {
     /**
      * Display a listing of the resource.
