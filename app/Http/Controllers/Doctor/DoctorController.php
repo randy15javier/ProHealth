@@ -105,7 +105,6 @@ class DoctorController extends ApiController
             $doctor->email = $request->email;
         }
 
-
         if (!$doctor->isDirty()) {
             return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar', 422);
         }

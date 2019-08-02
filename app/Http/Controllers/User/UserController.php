@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\User;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $usuarios = User::all();
+
+        return $this->showAll($usuarios);
     }
 
     /**
@@ -35,7 +38,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $reglas = [
+
+            'name' => 'required',
+            'lastname' => 'required',
+            'email' => 'required|email|unique:doctors',
+            'password' => 'required|min:6|'  
+        ];
+
+        $this->validate($request, $reglas);
+
+
+        $campos = $request->all();
+
+        $user = User::create($campos);
+
+        return $this->showOne($user, 201);
     }
 
     /**
@@ -44,9 +62,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return $this->showOne($user);
     }
 
     /**
@@ -67,9 +85,27 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $reglas = [
+
+            'email' => '|email|unique:users,email,' . $user->id,   
+        ];
+
+        $this->validate($request, $reglas);
+
+        if ($request->has('email')) {
+            $user->email = $request->email;
+        }
+
+
+        if (!$user->isDirty()) {
+            return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar', 422);
+        }
+
+        $user->save();
+
+        return $this->showOne($user, 201);
     }
 
     /**
@@ -78,8 +114,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return $this->showOne($user, 200);
     }
 }

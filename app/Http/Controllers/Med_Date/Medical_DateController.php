@@ -38,7 +38,25 @@ class Medical_DateController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $reglas = [
+
+            'date' => 'required',
+            'time' => 'required',
+            'status' => 'required',
+            'observation' => 'required',
+            'price' => 'required',
+            'patient' => 'required',
+        ];
+
+
+        $this->validate($request, $reglas);
+
+
+        $campos = $request->all();
+
+        $citasmedicas = Medical_Date::create($campos);
+
+        return $this->showOne($citasmedicas, 201);
     }
 
     /**
@@ -70,9 +88,38 @@ class Medical_DateController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Medical_Date $medicaldate)
     {
-        //
+        $reglas = [
+
+            'date' => 'required',
+            'time' => 'required',
+            'observation' => 'required'   
+        ];
+
+        $this->validate($request, $reglas);
+
+        if ($request->has('date')) {
+            $medicaldate->date = $request->date;
+        }
+
+        if ($request->has('time')) {
+            $medicaldate->time = $request->time;
+        }
+
+        if ($request->has('observation')) {
+            $medicaldate->observation = $request->observation;
+        }
+
+
+        if (!$medicaldate->isDirty()) {
+            return $this->errorResponse('Se debe especificar al menos un valor diferente para actualizar', 422);
+        }
+
+        $medicaldate->save();
+
+        return $this->showOne($medicaldate, 201);
+
     }
 
     /**
@@ -81,10 +128,12 @@ class Medical_DateController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Medical_Date $citasmedicas)
+    public function destroy(Medical_Date $medicaldate)
     {
-        $citasmedicas->delete();
+        $medicaldate->delete();
 
-         return $this->showOne($citasmedicas, 200);
+         return $this->showOne($medicaldate, 200);
     }
+    
 }
+

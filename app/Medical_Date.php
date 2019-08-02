@@ -5,7 +5,7 @@ namespace App;
 use App\Doctor;
 use App\Receptionist;
 use App\User;
-// use App\Scopes\AppointmentScope;
+use App\Scopes\DateScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,12 +31,12 @@ class Medical_Date extends Model
         
     ];
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
+    protected static function boot()
+    {
+        parent::boot();
 
-    //     static::addGlobalScope(new DatesScope);
-    // }
+        static::addGlobalScope(new DateScope);
+    }
     
     public function estaAtendida()
     {

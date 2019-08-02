@@ -17,7 +17,39 @@ class Doctor extends Model
     	'lastname',
     	'telephone',
     	'email'
-    ];
+	];
+	
+	public function setNameAttribute($valor)
+
+    {
+        $this->attributes['name'] = strtolower($valor);
+    }
+
+
+    public function getNameAttribute($valor)
+    
+    {
+        return ucwords($valor);
+    }
+
+    public function setLastnameAttribute($valor)
+
+    {
+        $this->attributes['lastname'] = strtolower($valor);
+    }
+
+
+    public function getLastnameAttribute($valor)
+    
+    {
+        return ucwords($valor);
+    }
+
+     public function setEmailAttribute($valor)
+
+    {
+        $this->attributes['email'] = strtolower($valor);
+    }
 
 	public function medical_dates()
 	{

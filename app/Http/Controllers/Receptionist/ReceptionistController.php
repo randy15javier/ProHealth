@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Receptionist;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\Receptionist;
 
-class ReceptionistController extends Controller
+class ReceptionistController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,9 @@ class ReceptionistController extends Controller
      */
     public function index()
     {
-        //
+        $recepcionistas = Receptionist::all();
+
+        return $this->showAll($recepcionistas);
     }
 
     /**
@@ -44,9 +47,9 @@ class ReceptionistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Receptionist $receptionist)
     {
-        //
+        return $this->showOne($receptionist, 200);
     }
 
     /**

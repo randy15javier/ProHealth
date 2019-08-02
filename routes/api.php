@@ -19,7 +19,7 @@ Route::resource('medicaldates', 'Med_Date\Medical_DateController', ['except' => 
 
 Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
 
-Route::resource('receptionist', 'Receptionist\ReceptionistController', ['except' => ['create', 'edit']]);
+Route::resource('receptionist', 'Receptionist\ReceptionistController', ['only' => ['index', 'show']]);
 
 
 
